@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis finanzas-APP</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>💰Mi control de finanzas💰💸</h1>
+
+        <section class="balance">
+            <h2>Balance total</h2>
+            <p id="balance">$0.00</p>
+        </section>
+
+        <section class="resumen">
+            <div class="card ingreso">
+                <h3>Ingresos</h3>
+                <p id="totalingresos">$0.00</p>
+            </div>
+            <div class="card gasto">
+                <h3>Gastos</h3>
+                <p id="totalgastos">$0.00</p>
+            </div>
+        </section>
+
+        <section class="estadisticas">
+            <div class="card">
+                <h3>Total movimientos</h3>
+                <p id="totalmovimientos">0</p>
+            </div>
+            <div class="card">
+                <h3>Mayor ingreso</h3>
+                <p id="mayoringreso">$0.00</p>
+            </div>
+            <div class="card">
+                <h3>Mayor gasto</h3>
+                <p id="mayorgasto">$0.00</p>
+            </div>
+
+        </section>
+
+        <section class="Grafica">
+            <canvas id="migrafica"></canvas>
+
+        </section>
+
+        <section class="formulario">
+
+            <h2>Agregar movimiento</h2>
+
+            <form action="" id="formulario">
+
+                <input type="text" placeholder="Descripción" id="descripcion" required>
+                <input type="number" placeholder="Monto" id="monto" required>
+                <select id="tipo">
+                    <option value="tipo">Tipo</option>
+                    <option value="ingreso">Ingreso</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+                <select id="categoria">
+                    <option value="catego">
+                        Categoría
+                    </option>
+
+                    <option value="comida">
+                        🍔 Comida
+                    </option>
+
+                    <option value="transporte">
+                        ⛽ Transporte
+                    </option>
+
+                    <option value="estudio">
+                        📚 Estudio
+                    </option>
+
+                    <option value="moto">
+                        🏍️ Moto
+                    </option>
+
+                    <option value="salario">
+                        💰 Salario
+                    </option>
+
+                    <option value="otros">
+                        📦 Otros
+                    </option>
+
+                </select>
+                <button type="submit">Agregar</button>
+
+            </form>
+
+        </section>
+
+        <select name="" id="filtro">
+            <option value="todos">Todos</option>
+            <option value="ingreso">Ingresos</option>
+            <option value="gasto">Gastos</option>
+        </select>
+
+        <section class="movimientos">
+            <h2>Movimientos recientes</h2>
+            <ul id="listamovimientos">
+                <!-- Aquí se agregarán los movimientos -->
+            </ul>
+
+        </section>
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
