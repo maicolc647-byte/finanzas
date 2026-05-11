@@ -11,11 +11,14 @@ const totalmovimientos = document.getElementById('totalmovimientos');
 const mayoringreso = document.getElementById('mayoringreso');
 const mayorgasto = document.getElementById('mayorgasto');
 const filtro = document.getElementById('filtro');
+const busqueda = document.getElementById('busqueda');
 function guardarMovimientos() {
     localStorage.setItem('movimientos', JSON.stringify(movimientos));
 }
 
 let movimientos = JSON.parse(localStorage.getItem('movimientos')) || [];
+let editando = false;
+let ideditar = null;
 
 formulario.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -27,7 +30,28 @@ formulario.addEventListener('submit', function (e) {
         categoria: categoria.value,
         fecha: new Date().toLocaleDateString()
     };
-    movimientos.push(nuevoMovimiento);
+
+    if (editando) {
+        movimientos = movimientos.map(function (movimiento) {
+            if (movimiento.id === ideditar) {
+
+                return{
+                    ...movimiento,
+                    descripcion: descripcion.value,
+                    monto: Number(monto.value),
+                    tipo: tipo.value,
+                    categoria: categoria.value
+                    
+                };
+            }
+            return movimiento;
+        });
+        editando = false;
+        ideditar = null;
+    } else {
+        movimientos.push(nuevoMovimiento);
+    }   
+    
     mostrarMovimientos();
     calcularbalance();
     calcularEstadisticas();
@@ -38,14 +62,15 @@ formulario.addEventListener('submit', function (e) {
 });
 
 filtro.addEventListener('change', mostrarMovimientos);
+busqueda.addEventListener('input', mostrarMovimientos);
 
 function mostrarMovimientos() {
     listamovimientos.innerHTML = "";
+    const busquedaTexto = busqueda.value.toLowerCase();
     const movimientosfiltrados = movimientos.filter(function (movimiento) {
-        if (filtro.value === 'todos') {
-            return true;
-        }
-        return movimiento.tipo === filtro.value;
+        const coincideFiltro = filtro.value === 'todos' || movimiento.tipo === filtro.value;
+        const coincideBusqueda = movimiento.descripcion.toLowerCase().includes(busquedaTexto);
+        return coincideFiltro && coincideBusqueda;
     });
 
     movimientosfiltrados.forEach(function (movimiento) {
@@ -61,6 +86,10 @@ function mostrarMovimientos() {
             <br>
             <small>${movimiento.fecha}</small>
         </div>
+
+            <button onclick="editarMovimiento(${movimiento.id})">
+                ✏️
+            </button>
 
             <button onclick="eliminarMovimiento(${movimiento.id})">
                 ❌
@@ -146,6 +175,19 @@ function eliminarMovimiento(id) {
     calcularbalance();
     calcularEstadisticas();
     actualizarGrafica();
+}
+
+function editarMovimiento(id) {
+    const movimiento = movimientos.find(function(m){
+        return m.id === id;
+    });
+
+    descripcion.value = movimiento.descripcion;
+    monto.value = movimiento.monto;
+    tipo.value = movimiento.tipo;
+    categoria.value = movimiento.categoria;
+    editando = true;
+    ideditar = id;
 }
 
 const ctx = document.getElementById('migrafica');
